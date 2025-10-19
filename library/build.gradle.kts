@@ -1,7 +1,23 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    id("maven-publish")
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                groupId     = "io.github.xtarii"
+                artifactId  = "open keyboard"
+                version     = "0.1"
+
+                from(components["release"])
+            }
+        }
+    }
 }
 
 android {
@@ -10,12 +26,10 @@ android {
         version = release(36)
     }
 
+    lint.targetSdk = 36
+
     defaultConfig {
-        applicationId = "android.open.keyboard"
         minSdk = 24
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
