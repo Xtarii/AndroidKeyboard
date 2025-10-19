@@ -11,7 +11,7 @@ afterEvaluate {
         publications {
             create<MavenPublication>("release") {
                 groupId     = "io.github.xtarii"
-                artifactId  = "open keyboard"
+                artifactId  = "AOSK"
                 version     = "0.1"
 
                 from(components["release"])
