@@ -8,6 +8,7 @@ import android.open.keyboard.extensions.interfaces.IExtension;
 import android.open.keyboard.extensions.objects.IObject;
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
 import java.lang.annotation.AnnotationFormatError;
@@ -55,11 +56,11 @@ public class ExtensionsManager {
         this.context = context;
         KeyboardSettings settings = context.getSettings();
 
-        var vm = loadExtension(settings != null ? settings.getView() : null);
+        var vm = loadExtension(settings != null ? settings.getView() : KeyboardSettings.VIEW);
         if(!(vm.instance instanceof IViewManager)) throw new IllegalStateException("Can not create keyboard without view manager");
         viewManager = new IObject<>(vm.meta, (IViewManager) vm.instance);
 
-        layout = loadExtension(settings != null ? settings.getLayout() : null);
+        layout = loadExtension(settings != null ? settings.getLayout() : KeyboardSettings.LAYOUT);
         if(layout == null) throw new IllegalStateException("Can not create keyboard without layout");
 
         extensions = new HashMap<>(); // Empty value in case it fails to load extensions
@@ -110,9 +111,7 @@ public class ExtensionsManager {
      * @param extension Extension class name
      * @return Extension Data and Object Instance
      */
-    public IObject<Extension, IExtension> loadExtension(String extension) {
-        if(extension == null) return null;
-
+    public IObject<Extension, IExtension> loadExtension(@NotNull String extension) {
         try {
             Class<?> ec = getExtensionByName(extension);
             Extension data = getExtensionAnnotation(ec);
