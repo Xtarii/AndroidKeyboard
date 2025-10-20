@@ -40,17 +40,17 @@ public abstract class AbstractKeyboardService extends InputMethodService {
     /**
      * Keyboard Configuration Reader
      */
-    private ConfigReader reader;
+    private ConfigReader reader = null;
 
     /**
      * Keyboard Extension Manager
      */
-    private ExtensionsManager extensionsManager;
+    private ExtensionsManager extensionsManager = null;
 
     /**
      * Keyboard Settings
      */
-    private KeyboardSettings settings;
+    private KeyboardSettings settings = null;
 
 
 
@@ -59,17 +59,11 @@ public abstract class AbstractKeyboardService extends InputMethodService {
         super.onCreate();
         reader = new ConfigReader();
 
-        try {
-            settings = new KeyboardSettings(this, reader);
-        } catch (IOException | JSONException e) {
-            Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage()));
-        }
+        try {settings = new KeyboardSettings(this, reader); }
+        catch(IOException | JSONException e) { Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
 
-        try {
-            extensionsManager = new ExtensionsManager(this);
-        } catch (IllegalStateException e) {
-            Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage()));
-        }
+        try { extensionsManager = new ExtensionsManager(this); }
+        catch(IllegalStateException e) { Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
     }
 
 

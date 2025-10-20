@@ -1,5 +1,6 @@
 package android.open.keyboard.extensions;
 
+import android.open.keyboard.config.defaults.KeyboardSettings;
 import android.open.keyboard.extensions.interfaces.IViewManager;
 import android.open.keyboard.keyboard.AbstractKeyboardService;
 import android.open.keyboard.extensions.annotations.Extension;
@@ -10,6 +11,7 @@ import android.util.Log;
 import org.json.JSONException;
 
 import java.lang.annotation.AnnotationFormatError;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -51,17 +53,18 @@ public class ExtensionsManager {
      */
     public ExtensionsManager(AbstractKeyboardService context) throws IllegalStateException {
         this.context = context;
+        KeyboardSettings settings = context.getSettings();
 
-        var vm = loadExtension(context.getSettings().getView());
+        var vm = loadExtension(settings != null ? settings.getView() : null);
         if(!(vm.instance instanceof IViewManager)) throw new IllegalStateException("Can not create keyboard without view manager");
         viewManager = new IObject<>(vm.meta, (IViewManager) vm.instance);
 
-        layout = loadExtension(context.getSettings().getLayout());
+        layout = loadExtension(settings != null ? settings.getLayout() : null);
         if(layout == null) throw new IllegalStateException("Can not create keyboard without layout");
 
         extensions = new HashMap<>(); // Empty value in case it fails to load extensions
         try {
-            extensions = loadExtensions(context.getSettings().getExtensions());
+            extensions = loadExtensions(settings != null ? settings.getExtensions() : new ArrayList<>());
         } catch (JSONException e) {
             Log.d(AbstractKeyboardService.CONSOLE_NAME, "No extensions loaded");
         }
