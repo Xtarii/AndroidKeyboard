@@ -111,6 +111,8 @@ public class ExtensionsManager {
      * @return Extension Data and Object Instance
      */
     public IObject<Extension, IExtension> loadExtension(String extension) {
+        if(extension == null) return null;
+
         try {
             Class<?> ec = getExtensionByName(extension);
             Extension data = getExtensionAnnotation(ec);
