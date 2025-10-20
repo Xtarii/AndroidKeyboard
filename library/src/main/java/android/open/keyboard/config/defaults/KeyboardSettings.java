@@ -2,6 +2,8 @@ package android.open.keyboard.config.defaults;
 
 import android.content.Context;
 import android.open.keyboard.config.ConfigReader;
+import android.open.keyboard.keyboard.AbstractKeyboardService;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,6 +12,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Keyboard Settings Object
@@ -39,7 +42,7 @@ public class KeyboardSettings {
     /**
      * Raw Data
      */
-    private final JSONObject raw;
+    private JSONObject raw;
 
 
 
@@ -50,11 +53,14 @@ public class KeyboardSettings {
      *
      * @param context Keyboard context
      * @param reader Configuration Reader
-     * @throws IOException This gets thrown if there was an error reading the settings file
-     * @throws JSONException This gets thrown if there was an error parsing the settings json data
      */
-    public KeyboardSettings(Context context, ConfigReader reader) throws IOException, JSONException {
-        raw = reader.parseJSON(reader.ReadConfig(context, FILE));
+    public KeyboardSettings(Context context, ConfigReader reader) {
+        String content = null;
+        try { content = reader.ReadConfig(context, FILE); }
+        catch (IOException e) { Log.e(AbstractKeyboardService.CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
+
+        try { raw = reader.parseJSON(content != null ? content : "{}"); }
+        catch (JSONException e) { raw = new JSONObject(); }
     }
 
 

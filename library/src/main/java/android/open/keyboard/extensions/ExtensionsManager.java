@@ -54,21 +54,23 @@ public class ExtensionsManager {
      */
     public ExtensionsManager(AbstractKeyboardService context) throws IllegalStateException {
         this.context = context;
-        KeyboardSettings settings = context.getSettings();
 
-        var vm = loadExtension(settings != null ? settings.getView() : KeyboardSettings.VIEW);
+
+
+        var vm = loadExtension(context.getSettings().getView());
         if(!(vm.instance instanceof IViewManager)) throw new IllegalStateException("Can not create keyboard without view manager");
         viewManager = new IObject<>(vm.meta, (IViewManager) vm.instance);
 
-        layout = loadExtension(settings != null ? settings.getLayout() : KeyboardSettings.LAYOUT);
+
+
+        layout = loadExtension(context.getSettings().getLayout());
         if(layout == null) throw new IllegalStateException("Can not create keyboard without layout");
 
+
+
         extensions = new HashMap<>(); // Empty value in case it fails to load extensions
-        try {
-            extensions = loadExtensions(settings != null ? settings.getExtensions() : new ArrayList<>());
-        } catch (JSONException e) {
-            Log.d(AbstractKeyboardService.CONSOLE_NAME, "No extensions loaded");
-        }
+        try { extensions = loadExtensions(context.getSettings().getExtensions()); }
+        catch (JSONException e) { Log.d(AbstractKeyboardService.CONSOLE_NAME, "No extensions loaded"); }
     }
 
 

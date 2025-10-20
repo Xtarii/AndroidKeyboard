@@ -50,17 +50,16 @@ public abstract class AbstractKeyboardService extends InputMethodService {
     /**
      * Keyboard Settings
      */
-    private KeyboardSettings settings = null;
+    private KeyboardSettings settings;
 
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        reader = new ConfigReader();
 
-        try {settings = new KeyboardSettings(this, reader); }
-        catch(IOException | JSONException e) { Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
+        reader = new ConfigReader();
+        settings = new KeyboardSettings(this, reader);
 
         try { extensionsManager = new ExtensionsManager(this); }
         catch(IllegalStateException e) { Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
