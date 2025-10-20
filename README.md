@@ -27,7 +27,7 @@ dependencies {
 ```
 
 To add the keyboard to any application add it to the `Manifest` file,
-```manifest
+```xml
 <service android:name="android.open.keyboard.Keyboard"
     android:exported="true"
     android:label="Simple Keyboard"
@@ -93,4 +93,3 @@ Similarly a custom view manager is created with `IViewManager` instead of `IExte
 
 It is not required to use compose for the UI, XML version works aswell as it is up for
 the view manager to decide how the rendering should work.
-
