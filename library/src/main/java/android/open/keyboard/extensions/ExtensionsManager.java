@@ -38,7 +38,7 @@ public class ExtensionsManager {
     /**
      * Keyboard Extensions Map
      */
-    private final HashMap<String, IObject<Extension, IExtension>> extensions;
+    private HashMap<String, IObject<Extension, IExtension>> extensions;
 
 
 
@@ -46,12 +46,10 @@ public class ExtensionsManager {
      * Creates Extensions Manager Instance
      *
      * @param context Keyboard Context
-     * @throws JSONException This gets thrown if there was an error with
-     * the keyboard settings.
      * @throws IllegalStateException This gets thrown if there was an error
      * loading the keyboard layout extension.
      */
-    public ExtensionsManager(AbstractKeyboardService context) throws JSONException, IllegalStateException {
+    public ExtensionsManager(AbstractKeyboardService context) throws IllegalStateException {
         this.context = context;
 
         var vm = loadExtension(context.getSettings().getView());
@@ -61,7 +59,12 @@ public class ExtensionsManager {
         layout = loadExtension(context.getSettings().getLayout());
         if(layout == null) throw new IllegalStateException("Can not create keyboard without layout");
 
-        extensions = loadExtensions(context.getSettings().getExtensions());
+        extensions = new HashMap<>(); // Empty value in case it fails to load extensions
+        try {
+            extensions = loadExtensions(context.getSettings().getExtensions());
+        } catch (JSONException e) {
+            Log.d(AbstractKeyboardService.CONSOLE_NAME, "No extensions loaded");
+        }
     }
 
 

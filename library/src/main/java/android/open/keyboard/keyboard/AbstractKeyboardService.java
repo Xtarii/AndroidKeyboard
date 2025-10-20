@@ -61,8 +61,13 @@ public abstract class AbstractKeyboardService extends InputMethodService {
 
         try {
             settings = new KeyboardSettings(this, reader);
-            extensionsManager = new ExtensionsManager(this);
         } catch (IOException | JSONException e) {
+            Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage()));
+        }
+
+        try {
+            extensionsManager = new ExtensionsManager(this);
+        } catch (IllegalStateException e) {
             Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage()));
         }
     }
