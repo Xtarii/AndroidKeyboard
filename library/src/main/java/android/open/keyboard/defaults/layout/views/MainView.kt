@@ -36,43 +36,49 @@ fun MainView() {
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 7.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 7.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             for(i in qp) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        if(shift == 1) shift = 0
                         context.currentInputConnection.commitText(
                             if(shift != 0) i.uppercase() else i,
                             1
                         )
+                        if(shift == 1) shift = 0
                     }
                 }
             }
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 7.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 7.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             for(i in al) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        if(shift == 1) shift = 0
                         context.currentInputConnection.commitText(
                             if(shift != 0) i.uppercase() else i,
                             1
                         )
+                        if(shift == 1) shift = 0
                     }
                 }
             }
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
@@ -100,19 +106,23 @@ fun MainView() {
             for(i in zm) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        if(shift == 1) shift = 0
                         context.currentInputConnection.commitText(
                             if(shift != 0) i.uppercase() else i,
                             1
                         )
+                        if(shift == 1) shift = 0
                     }
                 }
             }
 
             KeyboardButton(
                 onClick = {
-                    if(shift == 1) shift = 0
                     context.currentInputConnection.deleteSurroundingText(1, 0)
+                    if(shift == 1) shift = 0
+                },
+                onLongClick = {
+                    context.currentInputConnection.deleteSurroundingText(1, 0)
+                    if(shift == 1) shift = 0
                 },
 
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
@@ -127,7 +137,9 @@ fun MainView() {
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
@@ -148,6 +160,9 @@ fun MainView() {
 
             KeyboardButton(
                 onClick = {
+                    context.currentInputConnection.commitText(" ", 1)
+                },
+                onLongClick = {
                     context.currentInputConnection.commitText(" ", 1)
                 },
 
