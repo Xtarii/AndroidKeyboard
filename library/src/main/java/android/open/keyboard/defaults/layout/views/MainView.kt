@@ -88,7 +88,7 @@ fun MainView() {
                     if(shift > 2) shift = 0
                 },
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
-                width = 65.dp
+                width = 45.dp
             ) {
                 Icon(
                     painter = painterResource(
@@ -120,13 +120,9 @@ fun MainView() {
                     context.currentInputConnection.deleteSurroundingText(1, 0)
                     if(shift == 1) shift = 0
                 },
-                onLongClick = {
-                    context.currentInputConnection.deleteSurroundingText(1, 0)
-                    if(shift == 1) shift = 0
-                },
 
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
-                width = 65.dp
+                width = 45.dp
             ) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_left_outline),
@@ -149,7 +145,7 @@ fun MainView() {
                 },
 
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
-                width = 55.dp
+                width = 35.dp
             ) {
                 Text("?123")
             }
@@ -162,11 +158,8 @@ fun MainView() {
                 onClick = {
                     context.currentInputConnection.commitText(" ", 1)
                 },
-                onLongClick = {
-                    context.currentInputConnection.commitText(" ", 1)
-                },
 
-                width = 200.dp
+                width = 175.dp
             ) { /* Space Button */ }
 
             KeyboardButton(".") {
@@ -183,7 +176,7 @@ fun MainView() {
                 },
 
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
-                width = 55.dp
+                width = 35.dp
             ) {
                 Icon(
                     painter = painterResource(R.drawable.arrow_enter_outline),
