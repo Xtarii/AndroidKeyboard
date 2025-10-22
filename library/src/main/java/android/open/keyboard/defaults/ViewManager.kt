@@ -6,6 +6,7 @@ import android.open.keyboard.extensions.annotations.Extension
 import android.open.keyboard.extensions.interfaces.IComposeLayout
 import android.open.keyboard.extensions.interfaces.IExtension
 import android.open.keyboard.extensions.interfaces.IViewManager
+import android.open.keyboard.extensions.interfaces.KeyboardContextProvider
 import android.open.keyboard.keyboard.AbstractKeyboardService
 import android.util.Log
 import android.view.View
@@ -55,7 +56,11 @@ class ViewManager : IViewManager, LifecycleOwner, SavedStateRegistryOwner {
             return null
         }
 
-        return LayoutWrapper(context, { layout.Layout(context, content) })
+        return LayoutWrapper(context, {
+            KeyboardContextProvider(context) {
+                layout.Layout(context, content)
+            }
+        })
     }
 
     override fun onCreate(context: Keyboard) {
