@@ -99,8 +99,6 @@ class ViewManager : IViewManager, LifecycleOwner, SavedStateRegistryOwner {
     @SuppressLint("ViewConstructor")
     class LayoutWrapper(context: Keyboard, private val layout: @Composable () -> Unit) : AbstractComposeView(context) {
         @Composable
-        override fun Content() {
-            layout
-        }
+        override fun Content() { layout() }
     }
 }
