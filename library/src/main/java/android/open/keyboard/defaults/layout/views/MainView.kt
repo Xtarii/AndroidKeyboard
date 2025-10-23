@@ -117,13 +117,13 @@ fun MainView() {
 
             KeyboardButton(
                 onClick = {
-                    if(context.currentInputConnection.getSelectedText(0) != null)
+                    if(!context.currentInputConnection.getSelectedText(0).isNullOrEmpty())
                         context.currentInputConnection.commitText("", 1)
                     else context.currentInputConnection.deleteSurroundingText(1, 0)
                     if(shift == 1) shift = 0
                 },
                 onHold = {
-                    if(context.currentInputConnection.getSelectedText(0) != null)
+                    if(!context.currentInputConnection.getSelectedText(0).isNullOrEmpty())
                         context.currentInputConnection.commitText("", 1)
                     else context.currentInputConnection.deleteSurroundingText(1, 0)
                     if(shift == 1) shift = 0
