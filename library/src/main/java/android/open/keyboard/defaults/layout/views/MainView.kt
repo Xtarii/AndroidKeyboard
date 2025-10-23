@@ -45,7 +45,6 @@ fun MainView() {
             for(i in qp) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        if(it) return@KeyboardButton // No super placement of characters
                         context.currentInputConnection.commitText(
                             if(shift != 0) i.uppercase() else i,
                             1
@@ -66,7 +65,6 @@ fun MainView() {
             for(i in al) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        if(it) return@KeyboardButton // No super placement of characters
                         context.currentInputConnection.commitText(
                             if(shift != 0) i.uppercase() else i,
                             1
@@ -86,7 +84,6 @@ fun MainView() {
         ) {
             KeyboardButton(
                 onClick = {
-                    if(it) return@KeyboardButton // No super shift exists
                     shift++
                     if(shift > 2) shift = 0
                 },
@@ -109,7 +106,6 @@ fun MainView() {
             for(i in zm) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        if(it) return@KeyboardButton // No super placement of characters
                         context.currentInputConnection.commitText(
                             if(shift != 0) i.uppercase() else i,
                             1
@@ -145,7 +141,6 @@ fun MainView() {
         ) {
             KeyboardButton(
                 onClick = {
-                    if(it) return@KeyboardButton
                     // Special Character View
                 },
 
@@ -156,13 +151,11 @@ fun MainView() {
             }
 
             KeyboardButton(",") {
-                if(it) return@KeyboardButton
                 context.currentInputConnection.commitText(",", 1)
             }
 
             KeyboardButton(
                 onClick = {
-                    if(it) return@KeyboardButton // No super space exists
                     context.currentInputConnection.commitText(" ", 1)
                 },
 
@@ -170,13 +163,11 @@ fun MainView() {
             ) { /* Space Button */ }
 
             KeyboardButton(".") {
-                if(it) return@KeyboardButton
                 context.currentInputConnection.commitText(".", 1)
             }
 
             KeyboardButton(
                 onClick = {
-                    if(it) return@KeyboardButton // No super enter exists
                     context.currentInputConnection.sendKeyEvent(
                         KeyEvent(KeyEvent.ACTION_DOWN,
                             KeyEvent.KEYCODE_ENTER
