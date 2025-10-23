@@ -30,7 +30,7 @@ class KeyboardLayout : IComposeLayout {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp)
-                .background(Color(0.2f, 0.2f, 0.2f, 0.75f)),
+                .background(Color(0.2f, 0.2f, 0.2f, 0.95f)),
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
                 Box(modifier = Modifier.fillMaxWidth().height(75.dp)) {
