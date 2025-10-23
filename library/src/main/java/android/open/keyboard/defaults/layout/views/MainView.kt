@@ -122,6 +122,12 @@ fun MainView() {
                     else context.currentInputConnection.deleteSurroundingText(1, 0)
                     if(shift == 1) shift = 0
                 },
+                onHold = {
+                    if(context.currentInputConnection.getSelectedText(0) != null)
+                        context.currentInputConnection.commitText("", 1)
+                    else context.currentInputConnection.deleteSurroundingText(1, 0)
+                    if(shift == 1) shift = 0
+                },
 
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
                 width = 45.dp
