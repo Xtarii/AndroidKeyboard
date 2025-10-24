@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Android Open Soruce Keyboard"
 include(":library")
+include(":simplekeyboard")
