@@ -1,6 +1,5 @@
 package android.open.keyboard.extensions;
 
-import android.open.keyboard.config.defaults.KeyboardSettings;
 import android.open.keyboard.extensions.interfaces.IViewManager;
 import android.open.keyboard.keyboard.AbstractKeyboardService;
 import android.open.keyboard.extensions.annotations.Extension;
@@ -12,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 
 import java.lang.annotation.AnnotationFormatError;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;

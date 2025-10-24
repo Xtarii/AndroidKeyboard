@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 fun MainView() {
     val context = keyboardContext
 
-    var shift by remember { mutableIntStateOf(0) }
+    var shift by remember { mutableIntStateOf(1) }
 
     val qp = arrayOf("q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å")
     val al = arrayOf("a", "s", "d", "f", "g", "h", "j", "k", "l", "ö", "ä")
@@ -65,10 +65,7 @@ fun MainView() {
             for(i in al) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        context.currentInputConnection.commitText(
-                            if(shift != 0) i.uppercase() else i,
-                            1
-                        )
+                        context.putText(if(shift != 0) i.uppercase() else i)
                         if(shift == 1) shift = 0
                     }
                 }
@@ -99,17 +96,15 @@ fun MainView() {
                         }
                     ),
                     modifier = Modifier.fillMaxSize(0.5f),
-                    contentDescription = "Shift"
+                    contentDescription = "Shift",
+                    tint = Color(0.9f, 0.9f, 0.9f)
                 )
             }
 
             for(i in zm) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != 0) i.uppercase() else i) {
-                        context.currentInputConnection.commitText(
-                            if(shift != 0) i.uppercase() else i,
-                            1
-                        )
+                        context.putText(if(shift != 0) i.uppercase() else i)
                         if(shift == 1) shift = 0
                     }
                 }
@@ -117,15 +112,11 @@ fun MainView() {
 
             KeyboardButton(
                 onClick = {
-                    if(!context.currentInputConnection.getSelectedText(0).isNullOrEmpty())
-                        context.currentInputConnection.commitText("", 1)
-                    else context.currentInputConnection.deleteSurroundingText(1, 0)
+                    context.erase()
                     if(shift == 1) shift = 0
                 },
                 onHold = {
-                    if(!context.currentInputConnection.getSelectedText(0).isNullOrEmpty())
-                        context.currentInputConnection.commitText("", 1)
-                    else context.currentInputConnection.deleteSurroundingText(1, 0)
+                    context.erase()
                     if(shift == 1) shift = 0
                 },
 
@@ -135,7 +126,8 @@ fun MainView() {
                 Icon(
                     painter = painterResource(R.drawable.arrow_left_outline),
                     modifier = Modifier.fillMaxSize(0.5f),
-                    contentDescription = "Undo"
+                    contentDescription = "Undo",
+                    tint = Color(0.9f, 0.9f, 0.9f)
                 )
             }
         }
@@ -155,23 +147,24 @@ fun MainView() {
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
                 width = 35.dp
             ) {
-                Text("?123")
+                Text("?123", color = Color(0.9f, 0.9f, 0.9f))
             }
 
             KeyboardButton(",") {
-                context.currentInputConnection.commitText(",", 1)
+                context.putText(",")
             }
 
             KeyboardButton(
                 onClick = {
-                    context.currentInputConnection.commitText(" ", 1)
+                    context.putText(" ")
                 },
 
                 width = 175.dp
             ) { /* Space Button */ }
 
             KeyboardButton(".") {
-                context.currentInputConnection.commitText(".", 1)
+                context.putText(".")
+                if(shift == 0) shift = 1
             }
 
             KeyboardButton(
@@ -189,7 +182,8 @@ fun MainView() {
                 Icon(
                     painter = painterResource(R.drawable.arrow_enter_outline),
                     modifier = Modifier.fillMaxSize(0.5f),
-                    contentDescription = "return"
+                    contentDescription = "return",
+                    tint = Color(0.9f, 0.9f, 0.9f)
                 )
             }
         }

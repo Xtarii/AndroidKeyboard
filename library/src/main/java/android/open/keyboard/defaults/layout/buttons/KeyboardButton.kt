@@ -35,7 +35,8 @@ fun KeyboardButton(key: String, onHold: () -> Unit = {}, onClick: () -> Unit = {
         Text(
             key,
             modifier = Modifier,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            color = Color(0.9f, 0.9f, 0.9f)
         )
     }
 }
@@ -44,7 +45,19 @@ fun KeyboardButton(key: String, onHold: () -> Unit = {}, onClick: () -> Unit = {
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
-fun KeyboardButton(onHold: () -> Unit = {}, onClick: () -> Unit = {}, width: Dp = 25.dp, color: Color = Color(0.3f, 0.3f, 0.3f, 0.9f), onHoldInterval: Long = 50, holdDelay: Long  = onHoldInterval, content: @Composable () -> Unit = {}) {
+fun KeyboardButton(
+    onHold: () -> Unit = {},
+    onClick: () -> Unit = {},
+
+    width: Dp = 25.dp,
+    color: Color = Color(0.3f, 0.3f, 0.3f, 0.9f),
+
+    onHoldInterval: Long = 100,
+    holdDelay: Long  = onHoldInterval,
+
+    content: @Composable () -> Unit = {}
+) {
+
     val scope = rememberCoroutineScope()
     var isHold by remember { mutableStateOf(false) }
 

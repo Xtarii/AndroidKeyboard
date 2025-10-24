@@ -7,6 +7,7 @@ import android.open.keyboard.extensions.interfaces.IComposeLayout
 import android.open.keyboard.extensions.interfaces.IExtension
 import android.open.keyboard.extensions.interfaces.IViewManager
 import android.open.keyboard.extensions.interfaces.KeyboardContextProvider
+import android.open.keyboard.extensions.interfaces.LayoutContextProvider
 import android.open.keyboard.keyboard.AbstractKeyboardService
 import android.util.Log
 import android.view.View
@@ -24,13 +25,6 @@ import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 
 @Extension(ID = "android.open.keyboard.defaults.ViewManager", description = "Simple Compose View Manager")
 class ViewManager : IViewManager, LifecycleOwner, SavedStateRegistryOwner {
-    /**
-     * View Content
-     *
-     * Content that should be visible in the layout
-     */
-    private var content: @Composable () -> Unit = {}
-
     private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
     override val lifecycle: Lifecycle
         get() = lifecycleRegistry
@@ -58,7 +52,9 @@ class ViewManager : IViewManager, LifecycleOwner, SavedStateRegistryOwner {
 
         return LayoutWrapper(context, {
             KeyboardContextProvider(context) {
-                layout.Layout(context, content)
+                LayoutContextProvider(layout) {
+                    layout.Layout(context)
+                }
             }
         })
     }

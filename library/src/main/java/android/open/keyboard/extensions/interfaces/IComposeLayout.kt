@@ -10,6 +10,11 @@ import androidx.compose.runtime.compositionLocalOf
  */
 private val LocalContext = compositionLocalOf<Keyboard> { error("No keyboard context available in this context") }
 
+/**
+ * Local Keyboard Layout Context
+ */
+private val LocalLayout = compositionLocalOf<IComposeLayout> { error("No compose layout available in this context") }
+
 
 
 /**
@@ -23,6 +28,17 @@ fun KeyboardContextProvider(context: Keyboard, content: @Composable () -> Unit) 
     CompositionLocalProvider(LocalContext provides context) { content() }
 }
 
+/**
+ * Keyboard Layout Context Provider for Composable Layouts
+ *
+ * @param layout Keyboard Layout
+ * @param content Content that should use this context
+ */
+@Composable
+fun LayoutContextProvider(layout: IComposeLayout, content: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalLayout provides layout) { content() }
+}
+
 
 
 /**
@@ -31,6 +47,13 @@ fun KeyboardContextProvider(context: Keyboard, content: @Composable () -> Unit) 
 val keyboardContext: Keyboard
     @Composable
     get() = LocalContext.current
+
+/**
+ * Keyboard Layout
+ */
+val layoutContext: IComposeLayout
+    @Composable
+    get() = LocalLayout.current
 
 
 
@@ -51,8 +74,24 @@ interface IComposeLayout : IExtension {
      * keyboard then this should implement that content.
      *
      * @param context Keyboard context
-     * @param content Layout child Content
      */
     @Composable
-    fun Layout(context: Keyboard, content: @Composable () -> Unit)
+    fun Layout(context: Keyboard)
+
+
+
+    /**
+     * Loads Content into Keyboard Layout
+     *
+     * This will load composable content into the
+     * keyboard layout view.
+     *
+     * @param content Content to load into the layout
+     */
+    fun loadContentIntoView(content: @Composable () -> Unit)
+
+    /**
+     * Unloads content from layout view
+     */
+    fun unloadContentFromView()
 }

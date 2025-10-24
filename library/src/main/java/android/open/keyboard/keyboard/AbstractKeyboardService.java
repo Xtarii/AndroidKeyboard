@@ -6,11 +6,9 @@ import android.open.keyboard.config.defaults.KeyboardSettings;
 import android.open.keyboard.extensions.ExtensionsManager;
 import android.open.keyboard.extensions.interfaces.IExtension;
 import android.open.keyboard.extensions.interfaces.IViewManager;
+import android.os.Build;
 import android.util.Log;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -63,6 +61,33 @@ public abstract class AbstractKeyboardService extends InputMethodService {
 
         try { extensionsManager = new ExtensionsManager(this); }
         catch(IllegalStateException e) { Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
+    }
+
+
+
+    /**
+     * Puts a string into the input stream and
+     * moves the cursor to the end of the string.
+     *
+     * @param str String to push to the input stream
+     */
+    public void putText(String str) {
+        getCurrentInputConnection().commitText(str, 1);
+    }
+
+
+
+    /**
+     * Erases text from input stream. If any text is selected it will
+     * be removed otherwise the first character behind the cursor
+     * will be removed.
+     */
+    public void erase() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            if(getCurrentInputConnection().getSelectedText(0).isEmpty())
+                getCurrentInputConnection().commitText("", 1);
+            else getCurrentInputConnection().deleteSurroundingText(1, 0);
+        }
     }
 
 
