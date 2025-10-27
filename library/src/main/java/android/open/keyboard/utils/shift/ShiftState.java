@@ -34,4 +34,23 @@ public enum ShiftState {
         if(this == ON) return OFF;
         return this;
     }
+
+    /**
+     * Gets the next shift state
+     * <p/>
+     * This will read the states as a list of states,
+     * then by incrementing the index it will get
+     * the next state in the list or the first object
+     * if the index becomes bigger than the amount of
+     * states.
+     *
+     * @return The next shift state
+     */
+    public ShiftState next() {
+        int next = this.ordinal() + 1;
+        int max = ShiftState.values().length - 1;
+
+        if(next > max) next = 0;
+        return ShiftState.values()[next];
+    }
 }
