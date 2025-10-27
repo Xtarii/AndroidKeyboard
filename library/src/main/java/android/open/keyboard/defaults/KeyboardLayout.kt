@@ -17,10 +17,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -55,6 +53,23 @@ class KeyboardLayout : IComposeLayout {
     private var content: (@Composable () -> Unit)? = null
 
     /**
+     * Keyboard layout view
+     */
+    private val alphabeticView: MutableState<Boolean> = mutableStateOf(true)
+
+    /**
+     * Keyboard shift state
+     */
+    private val shift: MutableState<ShiftState> = mutableStateOf(ShiftState.ON)
+
+    /**
+     * Keyboard special view ( special number view )
+     */
+    private val specialView: MutableState<Boolean> = mutableStateOf(false)
+
+
+
+    /**
      * Keyboard Extensions with layout
      */
     private lateinit var extensions: HashMap<String, IObject<Extension, IComposableExtension>>
@@ -69,10 +84,6 @@ class KeyboardLayout : IComposeLayout {
 
     @Composable
     override fun Layout(context: Keyboard) {
-        var alphabeticView by remember { mutableStateOf(true) }
-        var shift by remember { mutableStateOf(ShiftState.ON) }
-        var specialView by remember { mutableStateOf(false) }
-
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -94,18 +105,18 @@ class KeyboardLayout : IComposeLayout {
                 }
 
                 Box(modifier = Modifier) {
-                    if(alphabeticView) AlphabeticView(shift) { shift = it }
-                    else NumberView { specialView = it }
+                    if(alphabeticView.value) AlphabeticView(shift.value) { shift.value = it }
+                    else NumberView { specialView.value = it }
                 }
 
                 Box(modifier = Modifier) {
                     KeyboardUtilsRow(
-                        alphabeticView,
-                        { alphabeticView = it },
-                        shift,
-                        { shift = it },
+                        alphabeticView.value,
+                        { alphabeticView.value = it },
+                        shift.value,
+                        { shift.value = it },
 
-                        specialView
+                        specialView.value
                     )
                 }
             }
@@ -123,6 +134,12 @@ class KeyboardLayout : IComposeLayout {
 
 
     override fun onResume(context: Keyboard, info: EditorInfo) {
+
+        /* Resets variables */
+
+        alphabeticView.value = true
+        specialView.value = false
+        shift.value = ShiftState.ON
     }
 
     override fun onPause(context: Keyboard) {
