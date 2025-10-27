@@ -9,6 +9,7 @@ import android.open.keyboard.extensions.interfaces.IComposableExtension
 import android.open.keyboard.extensions.interfaces.IComposeLayout
 import android.open.keyboard.extensions.interfaces.getExtensions
 import android.open.keyboard.extensions.objects.IObject
+import android.open.keyboard.utils.shift.ShiftState
 import android.view.inputmethod.EditorInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,28 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-
-
-
-/**
- * Keyboard Shift State
- */
-enum class ShiftState {
-    /**
-     * OFF State
-     */
-    OFF,
-    /**
-     * ON State
-     */
-    ON,
-    /**
-     * Capslock on
-     */
-    CAPSLOCK
-}
-
-
 
 @Extension(ID = "android.open.keyboard.defaults.KeyboardLayout", description = "Simple Compose Keyboard Layout")
 class KeyboardLayout : IComposeLayout {
