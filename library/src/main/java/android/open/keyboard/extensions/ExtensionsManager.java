@@ -92,7 +92,11 @@ public class ExtensionsManager {
                     map.put(data.ID(), obj);
 
                     Log.d(AbstractKeyboardService.CONSOLE_NAME, String.format(
-                            "Loaded extension: { id: %s, description: %s }", data.ID(), data.description())
+                            "Loaded extension: { id: %s, description: %s, version: %s }",
+                            data.ID(),
+                            data.description(),
+                            data.version()
+                        )
                     );
                 }
 
