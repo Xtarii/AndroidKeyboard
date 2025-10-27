@@ -84,7 +84,7 @@ public abstract class AbstractKeyboardService extends InputMethodService {
      */
     public void erase() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
-            if(getCurrentInputConnection().getSelectedText(0).isEmpty())
+            if(getCurrentInputConnection().getSelectedText(0) != null)
                 getCurrentInputConnection().commitText("", 1);
             else getCurrentInputConnection().deleteSurroundingText(1, 0);
         }
