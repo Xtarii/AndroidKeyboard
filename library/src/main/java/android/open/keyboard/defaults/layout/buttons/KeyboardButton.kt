@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -61,27 +62,33 @@ fun KeyboardButton(
     val scope = rememberCoroutineScope()
     var isHold by remember { mutableStateOf(false) }
 
+    val currentOnClick by rememberUpdatedState(onClick)
+    val currentOnHold by rememberUpdatedState(onHold)
+    val currentOnHoldInterval by rememberUpdatedState(onHoldInterval)
+    val currentHoldDelay by rememberUpdatedState(holdDelay)
+
     Surface(
         modifier = Modifier
-            .height(35.dp)
+            .height(40.dp)
             .width(width)
             .pointerInput(Unit) {
                 awaitEachGesture {
-                    val down = awaitFirstDown(requireUnconsumed = false)
-                    onClick()
+                    awaitFirstDown(requireUnconsumed = false)
+                    val holdJob = scope.launch {
+                        delay(currentHoldDelay)
 
-                    val job = scope.launch {
-                        delay(holdDelay)
+                        isHold = true
                         while (isHold) {
-                            onHold()
-                            delay(onHoldInterval)
+                            currentOnHold()
+                            delay(currentOnHoldInterval)
                         }
                     }
 
-                    isHold = true
                     waitForUpOrCancellation()
+                    if(!isHold) currentOnClick()
+
+                    holdJob.cancel()
                     isHold = false
-                    job.cancel()
                 }
             },
         shape = RoundedCornerShape(7.dp),
