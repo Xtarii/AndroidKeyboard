@@ -11,12 +11,6 @@ It is possible to remove the layout and view manager [ see configuration ].
 
 
 
-*Note*, while this keyboard (19.10.2025) "has" a keyboard layout, it is far
-from a complete version and more will be added to the keyboard layout in the
-future.
-
-
-
 ### Usage and Importation
 
 Add the dependency with *Jitpack*,
