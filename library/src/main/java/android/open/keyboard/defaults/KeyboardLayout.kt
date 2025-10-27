@@ -1,6 +1,7 @@
 package android.open.keyboard.defaults
 
 import android.open.keyboard.Keyboard
+import android.open.keyboard.defaults.layout.utils.ExtensionLayout
 import android.open.keyboard.defaults.layout.utils.KeyboardUtilsRow
 import android.open.keyboard.defaults.layout.views.AlphabeticView
 import android.open.keyboard.defaults.layout.views.NumberView
@@ -14,9 +15,9 @@ import android.view.inputmethod.EditorInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +47,11 @@ class KeyboardLayout : IComposeLayout {
      */
     private val specialView: MutableState<Boolean> = mutableStateOf(false)
 
+    /**
+     * Keyboard Show Extensions or local lexicon
+     */
+    private val showExtensions: MutableState<Boolean> = mutableStateOf(true)
+
 
 
     /**
@@ -66,21 +72,13 @@ class KeyboardLayout : IComposeLayout {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(320.dp)
+                .height(285.dp)
+                .padding(0.dp)
                 .background(Color(0.2f, 0.2f, 0.2f, 0.95f)),
         ) {
-            Column(modifier = Modifier.fillMaxSize()) {
-
-
-
-                /* Handle content view */
-
-
-
-                Box(modifier = Modifier.fillMaxWidth().height(75.dp)) {
-
-                    /* Extension View */
-
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Box(modifier = Modifier.fillMaxWidth().height(45.dp)) {
+                    if(showExtensions.value) ExtensionLayout(extensions)
                 }
 
                 Box(modifier = Modifier) {
@@ -119,6 +117,7 @@ class KeyboardLayout : IComposeLayout {
         alphabeticView.value = true
         specialView.value = false
         shift.value = ShiftState.ON
+        showExtensions.value = true
     }
 
     override fun onPause(context: Keyboard) {
