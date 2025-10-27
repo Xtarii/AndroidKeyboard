@@ -1,9 +1,9 @@
 package android.open.keyboard.defaults.layout.utils
 
 import android.open.keyboard.R
-import android.open.keyboard.defaults.ShiftState
 import android.open.keyboard.defaults.layout.buttons.KeyboardButton
 import android.open.keyboard.extensions.interfaces.keyboardContext
+import android.open.keyboard.utils.shift.ShiftState
 import android.view.KeyEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,7 +21,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun KeyboardUtilsRow(alphabetView: Boolean, setAlphabetView: (Boolean) -> Unit, shift: ShiftState, setShift: (ShiftState) -> Unit, specialView: Boolean) {
+fun KeyboardUtilsRow(
+    alphabetView: Boolean,
+    setAlphabetView: (Boolean) -> Unit,
+    shift: ShiftState,
+    setShift: (ShiftState) -> Unit,
+
+    specialView: Boolean
+) {
     val context = keyboardContext
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -48,7 +55,7 @@ fun KeyboardUtilsRow(alphabetView: Boolean, setAlphabetView: (Boolean) -> Unit, 
 
             KeyboardButton(if(specialView) "<" else ",") {
                 context.putText(if(specialView) "<" else ",")
-                if (shift == ShiftState.ON) setShift(ShiftState.OFF)
+                setShift(shift.off())
             }
 
             KeyboardButton(
@@ -61,7 +68,7 @@ fun KeyboardUtilsRow(alphabetView: Boolean, setAlphabetView: (Boolean) -> Unit, 
 
             KeyboardButton(if(specialView) ">" else ".") {
                 context.putText(if(specialView) ">" else ". ")
-                if (shift == ShiftState.OFF) setShift(ShiftState.ON)
+                setShift(shift.off())
             }
 
             KeyboardButton(
@@ -72,7 +79,7 @@ fun KeyboardUtilsRow(alphabetView: Boolean, setAlphabetView: (Boolean) -> Unit, 
                             KeyEvent.KEYCODE_ENTER
                         )
                     )
-                    if (shift == ShiftState.OFF) setShift(ShiftState.ON)
+                    setShift(shift.off())
                     setAlphabetView(true) /* Every enter sends the user back to alphabet view */
                 },
 
