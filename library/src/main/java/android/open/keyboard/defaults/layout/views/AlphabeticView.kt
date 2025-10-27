@@ -1,9 +1,9 @@
 package android.open.keyboard.defaults.layout.views
 
 import android.open.keyboard.R
-import android.open.keyboard.defaults.ShiftState
 import android.open.keyboard.defaults.layout.buttons.KeyboardButton
 import android.open.keyboard.extensions.interfaces.keyboardContext
+import android.open.keyboard.utils.shift.ShiftState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -43,7 +39,7 @@ fun AlphabeticView(shift: ShiftState, setShift: (ShiftState) -> Unit) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != ShiftState.OFF) i.uppercase() else i) {
                         context.putText(if(shift != ShiftState.OFF) i.uppercase() else i)
-                        if(shift == ShiftState.ON) setShift(ShiftState.OFF)
+                        setShift(shift.off())
                     }
                 }
             }
@@ -60,7 +56,7 @@ fun AlphabeticView(shift: ShiftState, setShift: (ShiftState) -> Unit) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != ShiftState.OFF) i.uppercase() else i) {
                         context.putText(if(shift != ShiftState.OFF) i.uppercase() else i)
-                        if(shift == ShiftState.ON) setShift(ShiftState.OFF)
+                        setShift(shift.off())
                     }
                 }
             }
@@ -74,15 +70,8 @@ fun AlphabeticView(shift: ShiftState, setShift: (ShiftState) -> Unit) {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             KeyboardButton(
-                onClick = {
-                    val current = shift.ordinal
-                    val max = ShiftState.entries.size - 1
+                onClick = { setShift(shift.next()) },
 
-                    var next = current + 1
-                    if(next > max) next = 0
-
-                    setShift(ShiftState.entries[next])
-                },
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
                 width = 45.dp
             ) {
@@ -104,7 +93,7 @@ fun AlphabeticView(shift: ShiftState, setShift: (ShiftState) -> Unit) {
                 Box(modifier = Modifier) {
                     KeyboardButton(if(shift != ShiftState.OFF) i.uppercase() else i) {
                         context.putText(if(shift != ShiftState.OFF) i.uppercase() else i)
-                        if(shift == ShiftState.ON) setShift(ShiftState.OFF)
+                        setShift(shift.off())
                     }
                 }
             }
@@ -112,11 +101,11 @@ fun AlphabeticView(shift: ShiftState, setShift: (ShiftState) -> Unit) {
             KeyboardButton(
                 onClick = {
                     context.erase()
-                    if(shift == ShiftState.ON) setShift(ShiftState.OFF)
+                    setShift(shift.off())
                 },
                 onHold = {
                     context.erase()
-                    if(shift == ShiftState.ON) setShift(ShiftState.OFF)
+                    setShift(shift.off())
                 },
 
                 color = Color(0.2f, 0.7f, 0.8f, 0.9f),
