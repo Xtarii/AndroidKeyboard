@@ -1,7 +1,8 @@
 package android.open.keyboard.defaults
 
 import android.open.keyboard.Keyboard
-import android.open.keyboard.defaults.layout.views.MainView
+import android.open.keyboard.defaults.layout.utils.KeyboardUtilsRow
+import android.open.keyboard.defaults.layout.views.AlphabeticView
 import android.open.keyboard.defaults.layout.views.NumberView
 import android.open.keyboard.extensions.annotations.Extension
 import android.open.keyboard.extensions.interfaces.IComposableExtension
@@ -16,9 +17,35 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+
+
+
+/**
+ * Keyboard Shift State
+ */
+enum class ShiftState {
+    /**
+     * OFF State
+     */
+    OFF,
+    /**
+     * ON State
+     */
+    ON,
+    /**
+     * Capslock on
+     */
+    CAPSLOCK
+}
+
+
 
 @Extension(ID = "android.open.keyboard.defaults.KeyboardLayout", description = "Simple Compose Keyboard Layout")
 class KeyboardLayout : IComposeLayout {
@@ -42,10 +69,14 @@ class KeyboardLayout : IComposeLayout {
 
     @Composable
     override fun Layout(context: Keyboard) {
+        var alphabeticView by remember { mutableStateOf(true) }
+        var shift by remember { mutableStateOf(ShiftState.ON) }
+        var specialView by remember { mutableStateOf(false) }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(300.dp)
+                .height(320.dp)
                 .background(Color(0.2f, 0.2f, 0.2f, 0.95f)),
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
@@ -57,13 +88,25 @@ class KeyboardLayout : IComposeLayout {
 
 
                 Box(modifier = Modifier.fillMaxWidth().height(75.dp)) {
-                    NumberView()
 
                     /* Extension View */
 
                 }
+
                 Box(modifier = Modifier) {
-                    MainView()
+                    if(alphabeticView) AlphabeticView(shift) { shift = it }
+                    else NumberView { specialView = it }
+                }
+
+                Box(modifier = Modifier) {
+                    KeyboardUtilsRow(
+                        alphabeticView,
+                        { alphabeticView = it },
+                        shift,
+                        { shift = it },
+
+                        specialView
+                    )
                 }
             }
         }
