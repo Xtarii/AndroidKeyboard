@@ -42,6 +42,26 @@ interface IComposableExtension : IExtension {
      */
     @Composable
     fun Content(): Unit
+
+
+
+    /**
+     * Load Event Method
+     *
+     * This gets called when the extension
+     * is loaded into the keyboard layout
+     *
+     * @param layout Keyboard Layout
+     */
+    fun onLoad(layout: IComposeLayout): Unit
+
+    /**
+     * Unload Event Method
+     *
+     * This gets called when the extension
+     * is unloaded from the keyboard layout
+     */
+    fun onUnload(layout: IComposeLayout): Unit
 }
 
 

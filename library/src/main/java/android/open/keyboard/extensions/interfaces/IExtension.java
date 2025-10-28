@@ -50,4 +50,16 @@ public interface IExtension {
      * @param context Keyboard Context
      */
     void onDestroy(@NonNull Keyboard context);
+
+
+
+    /**
+     * On Buffer Change Event Method
+     * <p/>
+     * This is called every time the buffer content changes.
+     *
+     * @param context Keyboard Context
+     * @param buffer Keyboard Input Buffer
+     */
+    void onBufferChange(@NonNull Keyboard context, @NonNull StringBuffer buffer);
 }

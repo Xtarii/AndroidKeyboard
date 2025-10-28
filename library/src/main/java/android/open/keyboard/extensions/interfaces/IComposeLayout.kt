@@ -86,12 +86,12 @@ interface IComposeLayout : IExtension {
      * This will load composable content into the
      * keyboard layout view.
      *
-     * @param content Content to load into the layout
+     * @param extension Content to load into the layout
      */
-    fun loadContentIntoView(content: @Composable () -> Unit)
+    fun loadExtensionIntoView(extension: IComposableExtension)
 
     /**
      * Unloads content from layout view
      */
-    fun unloadContentFromView()
+    fun unloadExtensionFromView()
 }

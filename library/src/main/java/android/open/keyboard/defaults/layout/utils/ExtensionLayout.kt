@@ -30,7 +30,7 @@ fun ExtensionLayout(extensions: HashMap<String, IObject<Extension, IComposableEx
             items(extensions.keys.toTypedArray()) {
                 OutlinedButton(
                     modifier = Modifier.size(25.dp),
-                    onClick = { layout.loadContentIntoView { extensions[it]?.instance?.Content() } },
+                    onClick = { layout.loadExtensionIntoView(extensions[it]!!.instance)},
                     contentPadding = PaddingValues(0.dp)
                 ) {
                     extensions[it]?.instance?.Badge()

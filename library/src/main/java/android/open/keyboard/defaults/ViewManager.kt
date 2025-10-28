@@ -82,6 +82,11 @@ class ViewManager : IViewManager, LifecycleOwner, SavedStateRegistryOwner {
 
 
 
+    override fun onBufferChange(context: Keyboard, buffer: StringBuffer) {
+    }
+
+
+
     /**
      * Handles Life Cycle Event
      */

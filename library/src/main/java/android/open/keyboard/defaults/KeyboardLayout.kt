@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -28,9 +29,9 @@ import androidx.compose.ui.unit.dp
 @Extension(ID = "android.open.keyboard.defaults.KeyboardLayout", description = "Simple Compose Keyboard Layout")
 class KeyboardLayout : IComposeLayout {
     /**
-     * Keyboard Layout content
+     * Keyboard Layout extension content
      */
-    private var content: (@Composable () -> Unit)? = null
+    private var content: IComposableExtension? = null
 
     /**
      * Keyboard layout view
@@ -48,9 +49,9 @@ class KeyboardLayout : IComposeLayout {
     private val specialView: MutableState<Boolean> = mutableStateOf(false)
 
     /**
-     * Keyboard Show Extensions or local lexicon
+     * Keyboard input stream
      */
-    private val showExtensions: MutableState<Boolean> = mutableStateOf(true)
+    private val stream: MutableState<String?> = mutableStateOf(null)
 
 
 
@@ -78,11 +79,19 @@ class KeyboardLayout : IComposeLayout {
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Box(modifier = Modifier.fillMaxWidth().height(45.dp)) {
-                    if(showExtensions.value) ExtensionLayout(extensions)
+                    if(stream.value == null) ExtensionLayout(extensions)
+                    else Text(stream.value!!)
                 }
 
                 Box(modifier = Modifier) {
-                    if(alphabeticView.value) AlphabeticView(shift.value) { shift.value = it }
+                    if(alphabeticView.value) AlphabeticView(
+                        shift.value,
+                        {shift.value = it},
+                        {
+                            if(stream.value == null) stream.value = it
+                            else stream.value += it
+                        }
+                    )
                     else NumberView { specialView.value = it }
                 }
 
@@ -102,11 +111,13 @@ class KeyboardLayout : IComposeLayout {
 
 
 
-    override fun loadContentIntoView(content: @Composable (() -> Unit)) {
-        this.content = content
+    override fun loadExtensionIntoView(extension: IComposableExtension) {
+        this.content = extension
     }
 
-    override fun unloadContentFromView() { content = null }
+    override fun unloadExtensionFromView() {
+        content = null
+    }
 
 
 
@@ -117,7 +128,7 @@ class KeyboardLayout : IComposeLayout {
         alphabeticView.value = true
         specialView.value = false
         shift.value = ShiftState.ON
-        showExtensions.value = true
+        stream.value = null
     }
 
     override fun onPause(context: Keyboard) {
@@ -126,5 +137,10 @@ class KeyboardLayout : IComposeLayout {
 
 
     override fun onDestroy(context: Keyboard) {
+    }
+
+
+
+    override fun onBufferChange(context: Keyboard, buffer: StringBuffer) {
     }
 }
