@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AlphabeticView(shift: ShiftState, setShift: (ShiftState) -> Unit, pushToStream: (String) -> Unit) {
+fun AlphabeticView(shift: ShiftState, setShift: (ShiftState) -> Unit) {
     val context = keyboardContext
 
     val qp = arrayOf("q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "å")

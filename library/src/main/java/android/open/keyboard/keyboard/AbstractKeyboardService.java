@@ -9,6 +9,8 @@ import android.open.keyboard.extensions.interfaces.IViewManager;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.Objects;
 
 /**
@@ -84,10 +86,9 @@ public abstract class AbstractKeyboardService extends InputMethodService {
      */
     public void putText(String str) {
         getCurrentInputConnection().commitText(str, 1);
-        buffer.append(str);
 
-        if(str.endsWith(" "))
-            buffer.delete(0, buffer.length() - 1);
+        buffer.append(str);
+        if(str.endsWith(" ")) buffer.delete(0, buffer.length() - 1);
 
         onBufferChange();
     }
@@ -105,6 +106,7 @@ public abstract class AbstractKeyboardService extends InputMethodService {
                 getCurrentInputConnection().commitText("", 1);
             else getCurrentInputConnection().deleteSurroundingText(1, 0);
         }
+
         if(buffer.length() > 0) buffer.deleteCharAt(buffer.length() - 1);
         onBufferChange();
     }

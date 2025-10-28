@@ -4,6 +4,7 @@ import android.open.keyboard.Keyboard;
 import android.view.inputmethod.EditorInfo;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * Keyboard Extension Interface
