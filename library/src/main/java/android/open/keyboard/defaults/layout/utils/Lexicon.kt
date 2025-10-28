@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Lexicon(buffer: String, shift: ShiftState, words: List<String>, lexicon: Lexicon) {
+fun Lexicon(buffer: String, shift: ShiftState, words: List<String>, lexicon: Lexicon, onInsert: () -> Unit) {
     val context = keyboardContext
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -34,6 +34,8 @@ fun Lexicon(buffer: String, shift: ShiftState, words: List<String>, lexicon: Lex
                     modifier = Modifier,
                     onClick = {
                         lexicon.add(buffer)
+                        context.putText(" ")
+                        onInsert()
                     },
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.textButtonColors().copy(
@@ -53,7 +55,8 @@ fun Lexicon(buffer: String, shift: ShiftState, words: List<String>, lexicon: Lex
                             buffer.length,
                             0
                         )
-                        context.putText(if(shift != ShiftState.OFF) it.uppercase() else it)
+                        context.putText((if(shift != ShiftState.OFF) it.uppercase() else it) + " ")
+                        onInsert()
                     },
                     contentPadding = PaddingValues(0.dp),
                     colors = ButtonDefaults.textButtonColors().copy(

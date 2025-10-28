@@ -114,7 +114,12 @@ class KeyboardLayout : IComposeLayout {
                             ) {}
                         }
                         Box(modifier = Modifier) {
-                            Lexicon(buffer.value, shift.value, lexicon.value, lexiconManager)
+                            Lexicon(
+                                buffer.value,
+                                shift.value,
+                                lexicon.value,
+                                lexiconManager
+                            ) { lexicon.value = listOf() }
                         }
                     }
                 }
