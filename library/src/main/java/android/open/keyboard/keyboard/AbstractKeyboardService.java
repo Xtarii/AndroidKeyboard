@@ -78,6 +78,15 @@ public abstract class AbstractKeyboardService extends InputMethodService {
 
 
 
+    @Override
+    public void onFinishInputView(boolean finishingInput) {
+        super.onFinishInputView(finishingInput);
+
+        buffer = new StringBuffer();
+    }
+
+
+
     /**
      * Puts a string into the input stream and
      * moves the cursor to the end of the string.
