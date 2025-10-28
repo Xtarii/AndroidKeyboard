@@ -65,7 +65,7 @@ public class Lexicon {
         int i = 0;
         while(i < max && i < data.size()) {
             String c = data.get(i);
-            if(c.startsWith(str)) matches.add(c);
+            if(c.startsWith(str.toLowerCase())) matches.add(c);
             i++;
         }
 
@@ -92,7 +92,7 @@ public class Lexicon {
      * @param str String to add
      */
     public void add(String str) {
-        data.add(str);
+        data.add(str.toLowerCase());
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(str.toLowerCase(), "word");
