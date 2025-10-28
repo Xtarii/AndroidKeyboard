@@ -66,6 +66,7 @@ public class Lexicon {
         while(i < max && i < data.size()) {
             String c = data.get(i);
             if(c.startsWith(str)) matches.add(c);
+            i++;
         }
 
         return matches;

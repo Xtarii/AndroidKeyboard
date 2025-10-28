@@ -177,7 +177,7 @@ class KeyboardLayout : IComposeLayout {
         if(buffer.isEmpty()) lexicon.value = listOf()
         else {
             this.buffer.value = buffer.toString()
-            val res = listOf<String>() //lexiconManager.getMatches(buffer.toString())
+            val res = lexiconManager.getMatches(buffer.toString())
             if(!res.isEmpty()) lexicon.value = res
             else lexicon.value = listOf("")
         }
