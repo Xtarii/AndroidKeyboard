@@ -97,7 +97,7 @@ public abstract class AbstractKeyboardService extends InputMethodService {
         getCurrentInputConnection().commitText(str, 1);
 
         buffer.append(str);
-        if(str.endsWith(" ")) buffer.delete(0, buffer.length() - 1);
+        if(str.endsWith(" ")) buffer = new StringBuffer();
 
         onBufferChange();
     }
