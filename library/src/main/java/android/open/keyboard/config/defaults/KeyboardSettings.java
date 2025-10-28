@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Keyboard Settings Object
@@ -57,7 +56,10 @@ public class KeyboardSettings {
     public KeyboardSettings(Context context, ConfigReader reader) {
         String content = null;
         try { content = reader.ReadConfig(context, FILE); }
-        catch (IOException e) { Log.e(AbstractKeyboardService.CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
+        catch (IOException e) { Log.e(AbstractKeyboardService.CONSOLE_NAME,
+                (e.getMessage() != null) ? e.getMessage()
+                        : "Unmarked error occurred");
+        }
 
         try { raw = reader.parseJSON(content != null ? content : "{}"); }
         catch (JSONException e) { raw = new JSONObject(); }

@@ -13,7 +13,6 @@ import org.json.JSONException;
 import java.lang.annotation.AnnotationFormatError;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Keyboard Annotation Extensions Manager
@@ -101,7 +100,10 @@ public class ExtensionsManager {
                 }
 
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | AnnotationFormatError ex) {
-                Log.e(AbstractKeyboardService.CONSOLE_NAME, Objects.requireNonNull(ex.getMessage()));
+                Log.e(AbstractKeyboardService.CONSOLE_NAME,
+                        (ex.getMessage() != null) ? ex.getMessage()
+                                : "Unmarked error occurred"
+                );
             }
         }
         return map;
@@ -124,7 +126,10 @@ public class ExtensionsManager {
             if(inst instanceof IExtension) return new IObject<>(data, (IExtension) inst);
 
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException | AnnotationFormatError e) {
-            Log.e(AbstractKeyboardService.CONSOLE_NAME, Objects.requireNonNull(e.getMessage()));
+            Log.e(AbstractKeyboardService.CONSOLE_NAME,
+                    (e.getMessage() != null) ? e.getMessage()
+                            : "Unmarked error occurred"
+            );
         }
 
         return null;
