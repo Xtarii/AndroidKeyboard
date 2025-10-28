@@ -55,7 +55,16 @@ fun Lexicon(buffer: String, shift: ShiftState, words: List<String>, lexicon: Lex
                             buffer.length,
                             0
                         )
-                        context.putText((if(shift != ShiftState.OFF) it.uppercase() else it) + " ")
+
+                        val word = if(shift == ShiftState.CAPSLOCK)
+                            it.uppercase()
+                        else if(buffer[0].isUpperCase()) it.replaceFirstChar{ c ->
+                            if(c.isLowerCase())
+                                c.titlecase()
+                            else c.toString() }
+                        else it
+
+                        context.putText("$word ")
                         onInsert()
                     },
                     contentPadding = PaddingValues(0.dp),
@@ -63,7 +72,15 @@ fun Lexicon(buffer: String, shift: ShiftState, words: List<String>, lexicon: Lex
                         contentColor = Color(0.9f, 0.9f, 0.9f)
                     )
                 ) {
-                    Text("\"${if(shift != ShiftState.OFF) it.uppercase() else it}\"", fontSize = 17.sp)
+                    val word = if(shift == ShiftState.CAPSLOCK)
+                        it.uppercase()
+                    else if(buffer[0].isUpperCase()) it.replaceFirstChar{ c ->
+                        if(c.isLowerCase())
+                            c.titlecase()
+                        else c.toString() }
+                    else it
+
+                    Text("\"${word}\"", fontSize = 17.sp)
                 }
             }
         }

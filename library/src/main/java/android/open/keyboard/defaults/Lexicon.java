@@ -63,7 +63,7 @@ public class Lexicon {
         List<String> matches = new ArrayList<>();
 
         int i = 0;
-        while(i < max && i < data.size()) {
+        while(i < data.size() && matches.size() < (max + 1)) {
             String c = data.get(i);
             if(c.startsWith(str.toLowerCase())) matches.add(c);
             i++;
