@@ -11,6 +11,13 @@ By default it is minimalistic with only 2 extensions,
 
 It is possible to remove the layout and view manager [ see configuration ].
 
+The keyboard stores lexicon data on the device ( by default )
+but no data is shared with any external server.
+
+If of project uses this keyboard it is up to that project
+to share data or use external servers. The base implementation,
+this keyboard, does not do that by default.
+
 
 
 ### Usage and Importation
