@@ -41,6 +41,11 @@ public abstract class AbstractKeyboardService extends InputMethodService {
     private ConfigReader reader = null;
 
     /**
+     * Keyboard Input Stream Buffer
+     */
+    private StringBuffer buffer = null;
+
+    /**
      * Keyboard Extension Manager
      */
     private ExtensionsManager extensionsManager = null;
@@ -61,6 +66,8 @@ public abstract class AbstractKeyboardService extends InputMethodService {
 
         try { extensionsManager = new ExtensionsManager(this); }
         catch(IllegalStateException e) { Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
+
+        buffer = new StringBuffer();
     }
 
 
@@ -73,6 +80,7 @@ public abstract class AbstractKeyboardService extends InputMethodService {
      */
     public void putText(String str) {
         getCurrentInputConnection().commitText(str, 1);
+        buffer.append(str);
     }
 
 
@@ -88,7 +96,16 @@ public abstract class AbstractKeyboardService extends InputMethodService {
                 getCurrentInputConnection().commitText("", 1);
             else getCurrentInputConnection().deleteSurroundingText(1, 0);
         }
+        if(buffer.length() > 0) buffer.deleteCharAt(buffer.length() - 1);
+        onBufferChange();
     }
+
+
+
+    /**
+     * Keyboard Buffer Change Event
+     */
+    protected abstract void onBufferChange();
 
 
 
@@ -127,4 +144,9 @@ public abstract class AbstractKeyboardService extends InputMethodService {
     public ConfigReader getReader() {
         return reader;
     }
+
+    /**
+     * Keyboard Input Stream Buffer
+     */
+    public StringBuffer getBuffer() { return buffer; }
 }
