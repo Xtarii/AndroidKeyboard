@@ -3,6 +3,8 @@
 Android Open Source Keyboard aims to be a simple to implement keyboard for
 the Android devices.
 
+<img width="382" height="252" alt="image" src="https://github.com/user-attachments/assets/5b7cba9f-b38d-43a4-ba3d-bc472b71e400" />
+
 By default it is minimalistic with only 2 extensions,
 - A simple view manager using compose for rendering
 - A simple layout manager using compose for the view manager
