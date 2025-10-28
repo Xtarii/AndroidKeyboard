@@ -65,7 +65,11 @@ public abstract class AbstractKeyboardService extends InputMethodService {
         settings = new KeyboardSettings(this, reader);
 
         try { extensionsManager = new ExtensionsManager(this); }
-        catch(IllegalStateException e) { Log.e(CONSOLE_NAME, Objects.requireNonNull(e.getMessage())); }
+        catch(IllegalStateException e) {
+            Log.e(CONSOLE_NAME, (e.getMessage() != null) ? e.getMessage()
+                    : "Unmarked Error occurred"
+            );
+        }
 
         buffer = new StringBuffer();
     }
