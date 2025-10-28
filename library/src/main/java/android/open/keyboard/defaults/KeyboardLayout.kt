@@ -16,6 +16,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,8 +24,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +44,7 @@ class KeyboardLayout : IComposeLayout {
     /**
      * Keyboard Layout extension content
      */
-    private var content: IComposableExtension? = null
+    private var content: MutableState<IComposableExtension?> = mutableStateOf(null)
 
     /**
      * Keyboard layout view
@@ -96,7 +101,8 @@ class KeyboardLayout : IComposeLayout {
                 .padding(0.dp)
                 .background(Color(0.2f, 0.2f, 0.2f, 0.95f)),
         ) {
-            Column(modifier = Modifier.fillMaxWidth()) {
+            if(content.value == null)
+                Column(modifier = Modifier.fillMaxWidth()) {
                 Box(modifier = Modifier.fillMaxWidth().height(45.dp)) {
                     if(lexicon.value.isEmpty()) ExtensionLayout(extensions)
                     else Row(modifier = Modifier.fillMaxSize()) {
@@ -105,13 +111,20 @@ class KeyboardLayout : IComposeLayout {
                             .fillMaxHeight(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Button(
+                            TextButton(
                                 modifier = Modifier.size(30.dp),
-                                onClick = { lexicon.value = ArrayList() },
-                                colors = ButtonDefaults.buttonColors().copy(
-                                    containerColor = Color(0.2f, 0.7f, 0.8f, 0.9f)
+                                onClick = { lexicon.value = listOf() },
+                                contentPadding = PaddingValues(0.dp),
+
+                                colors = ButtonDefaults.textButtonColors().copy(
+                                    contentColor = Color(0.9f, 0.9f, 0.9f)
                                 )
-                            ) {}
+                            ) {
+                                Icon(
+                                    Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                                    "Back"
+                                )
+                            }
                         }
                         Box(modifier = Modifier) {
                             Lexicon(
@@ -143,17 +156,41 @@ class KeyboardLayout : IComposeLayout {
                     )
                 }
             }
+            else Column(modifier = Modifier.fillMaxSize()) {
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(35.dp)
+                    .background(Color(0.2f, 0.7f, 0.8f, 0.1f))
+                ) {
+                    TextButton(
+                        onClick = { unloadExtensionFromView() },
+                        contentPadding = PaddingValues(0.dp),
+
+                        colors = ButtonDefaults.textButtonColors().copy(
+                            contentColor = Color(0.9f, 0.9f, 0.9f)
+                        )
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                            "Back"
+                        )
+                    }
+                }
+                Box(modifier = Modifier.fillMaxWidth()) {
+                    content.value!!.Content()
+                }
+            }
         }
     }
 
 
 
     override fun loadExtensionIntoView(extension: IComposableExtension) {
-        this.content = extension
+        this.content.value = extension
     }
 
     override fun unloadExtensionFromView() {
-        content = null
+        content.value = null
     }
 
 
