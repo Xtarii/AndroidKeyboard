@@ -11,6 +11,7 @@ By default it is minimalistic with only 2 extensions,
 
 It is possible to remove the layout and view manager [ see configuration ].
 
+##### OBS
 The keyboard stores lexicon data on the device ( by default )
 but no data is shared with any external server.
 
