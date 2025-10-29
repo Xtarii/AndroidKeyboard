@@ -1,16 +1,13 @@
 package android.open.keyboard.defaults
 
 import android.open.keyboard.Keyboard
+import android.open.keyboard.abstracts.layout.AbstractComposeLayout
 import android.open.keyboard.defaults.layout.utils.ExtensionLayout
 import android.open.keyboard.defaults.layout.utils.KeyboardUtilsRow
 import android.open.keyboard.defaults.layout.utils.Lexicon
 import android.open.keyboard.defaults.layout.views.AlphabeticView
 import android.open.keyboard.defaults.layout.views.NumberView
 import android.open.keyboard.extensions.annotations.Extension
-import android.open.keyboard.extensions.interfaces.IComposableExtension
-import android.open.keyboard.extensions.interfaces.IComposeLayout
-import android.open.keyboard.extensions.interfaces.getExtensions
-import android.open.keyboard.extensions.objects.IObject
 import android.open.keyboard.utils.shift.ShiftState
 import android.view.inputmethod.EditorInfo
 import androidx.compose.foundation.background
@@ -38,21 +35,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Extension(ID = "android.open.keyboard.defaults.KeyboardLayout", description = "Simple Compose Keyboard Layout")
-class KeyboardLayout : IComposeLayout {
-    /**
-     * Keyboard Layout extension content
-     */
-    private var content: MutableState<IComposableExtension?> = mutableStateOf(null)
-
+class KeyboardLayout : AbstractComposeLayout() {
     /**
      * Keyboard layout view
      */
     private val alphabeticView: MutableState<Boolean> = mutableStateOf(true)
-
-    /**
-     * Keyboard shift state
-     */
-    private val shift: MutableState<ShiftState> = mutableStateOf(ShiftState.ON)
 
     /**
      * Keyboard special view ( special number view )
@@ -65,18 +52,6 @@ class KeyboardLayout : IComposeLayout {
     private val lexicon: MutableState<List<String>> = mutableStateOf(ArrayList())
 
     /**
-     * Keyboard Buffer
-     */
-    private val buffer: MutableState<String> = mutableStateOf("")
-
-
-
-    /**
-     * Keyboard Extensions with layout
-     */
-    private lateinit var extensions: HashMap<String, IObject<Extension, IComposableExtension>>
-
-    /**
      * Keyboard Lexicon Manager
      */
     private lateinit var lexiconManager: Lexicon
@@ -84,7 +59,7 @@ class KeyboardLayout : IComposeLayout {
 
 
     override fun onCreate(context: Keyboard) {
-        extensions = IComposableExtension.getExtensions(context)
+        super.onCreate(context)
         lexiconManager = Lexicon(context)
     }
 
@@ -99,7 +74,7 @@ class KeyboardLayout : IComposeLayout {
                 .padding(0.dp)
                 .background(Color(0.2f, 0.2f, 0.2f, 0.95f)),
         ) {
-            if(content.value == null)
+            if(content == null)
                 Column(modifier = Modifier.fillMaxWidth()) {
                 Box(modifier = Modifier.fillMaxWidth().height(45.dp)) {
                     if(lexicon.value.isEmpty()) ExtensionLayout(extensions)
@@ -126,8 +101,8 @@ class KeyboardLayout : IComposeLayout {
                         }
                         Box(modifier = Modifier) {
                             Lexicon(
-                                buffer.value,
-                                shift.value,
+                                buffer,
+                                shift,
                                 lexicon.value,
                                 lexiconManager
                             ) { lexicon.value = listOf() }
@@ -136,10 +111,7 @@ class KeyboardLayout : IComposeLayout {
                 }
 
                 Box(modifier = Modifier) {
-                    if(alphabeticView.value) AlphabeticView(
-                        shift.value,
-                        {shift.value = it},
-                    )
+                    if(alphabeticView.value) AlphabeticView(shift) { shift = it }
                     else NumberView { specialView.value = it }
                 }
 
@@ -147,8 +119,8 @@ class KeyboardLayout : IComposeLayout {
                     KeyboardUtilsRow(
                         alphabeticView.value,
                         { alphabeticView.value = it },
-                        shift.value,
-                        { shift.value = it },
+                        shift,
+                        { shift = it },
 
                         specialView.value
                     )
@@ -175,7 +147,7 @@ class KeyboardLayout : IComposeLayout {
                     }
                 }
                 Box(modifier = Modifier.fillMaxWidth()) {
-                    content.value!!.Content()
+                    content!!.Content()
                 }
             }
         }
@@ -183,40 +155,23 @@ class KeyboardLayout : IComposeLayout {
 
 
 
-    override fun loadExtensionIntoView(extension: IComposableExtension) {
-        this.content.value = extension
-    }
-
-    override fun unloadExtensionFromView() {
-        content.value = null
-    }
-
-
-
-    override fun onResume(context: Keyboard, info: EditorInfo) {
+    override fun onResume(context: Keyboard, info: EditorInfo?) {
 
         /* Resets variables */
 
         alphabeticView.value = true
         specialView.value = false
-        shift.value = ShiftState.ON
+        shift = ShiftState.ON
         lexicon.value = listOf()
-    }
-
-    override fun onPause(context: Keyboard) {
-    }
-
-
-
-    override fun onDestroy(context: Keyboard) {
     }
 
 
 
     override fun onBufferChange(context: Keyboard, buffer: StringBuffer) {
+        super.onBufferChange(context, buffer)
+
         if(buffer.isEmpty()) lexicon.value = listOf()
         else {
-            this.buffer.value = buffer.toString()
             val res = lexiconManager.getMatches(buffer.toString())
             if(!res.isEmpty()) lexicon.value = res
             else lexicon.value = listOf("")

@@ -68,6 +68,9 @@ public class ExtensionsManager {
         extensions = new HashMap<>(); // Empty value in case it fails to load extensions
         try { extensions = loadExtensions(context.getSettings().getExtensions()); }
         catch (JSONException e) { Log.d(AbstractKeyboardService.CONSOLE_NAME, "No extensions loaded"); }
+
+        extensions.put(viewManager.meta.ID(), new IObject<>(viewManager.meta, viewManager.instance));
+        extensions.put(layout.meta.ID(), new IObject<>(layout.meta, layout.instance));
     }
 
 
