@@ -68,7 +68,7 @@ fun KeyboardUtilsRow(
 
             KeyboardButton(if(specialView) ">" else ".") {
                 context.putText(if(specialView) ">" else ". ")
-                setShift(shift.off())
+                if(!specialView && shift == ShiftState.OFF) setShift(ShiftState.ON)
             }
 
             KeyboardButton(
